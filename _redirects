@@ -1,0 +1,4 @@
+# Serve the go-import page for every path under /licenseforge/ (packages and nested modules),
+# because `go get` requests the full import path with ?go-get=1.
+# Format: Cloudflare Pages / Netlify. Adapt if hosting elsewhere.
+/licenseforge/*  /licenseforge/index.html  200
