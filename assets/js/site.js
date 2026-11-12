@@ -92,8 +92,8 @@
   tabs.forEach((t, i) => {
     t.addEventListener("click", () => select(t));
     t.addEventListener("keydown", (e) => {
-      const d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
-      if (d) { const n = tabs[(i + d + tabs.length) % tabs.length]; select(n); n.focus(); }
+      const j = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 }[e.key];
+      if (j !== undefined) { e.preventDefault(); const n = tabs[(j + tabs.length) % tabs.length]; select(n); n.focus(); }
     });
   });
   $$("[data-copy]").forEach((b) => b.addEventListener("click", async () => {

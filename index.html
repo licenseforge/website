@@ -334,7 +334,7 @@ claims, status, err := licensefile.<span class="f">Open</span>(text, trustedKeys
       </div>
       <div class="term reveal">
         <div class="card-head"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="mono muted">shell</span></div>
-<pre class="mono" aria-label="Install commands"><code><span class="c"># Production: PostgreSQL 17, an OIDC provider, two Secrets.</span>
+<pre class="mono" aria-label="Install commands"><code><span class="c"># Production: PostgreSQL 17+, an OIDC provider, two Secrets.</span>
 <span class="c"># The full walk-through is in docs/getting-started.md.</span>
 <span class="p">$</span> helm install licenseforge \
     oci://ghcr.io/licenseforge/charts/licenseforge \
@@ -342,6 +342,7 @@ claims, status, err := licensefile.<span class="f">Open</span>(text, trustedKeys
     --set secrets.server=licenseforge-server \
     --set secrets.migrate=licenseforge-migrate \
     --set oidc.enabled=true --set oidc.issuer=… \
+    --set oidc.clientID=… --set oidc.redirectURL=… \
     --set bootstrapAdmin=you@vendor.example
 <span class="p">$</span> curl https://licenses.vendor.example/readyz
 <span class="o">ok</span></code></pre>
