@@ -1,0 +1,49 @@
+name: Site
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      # go-import tags, CSP hashes and local links (scripts/check.py); skipped
+      # until the landing page that adds the script is merged.
+      - name: Check the site
+        run: if [ -f scripts/check.py ]; then python3 scripts/check.py; fi
+
+  # Deploys main to GitHub Pages. Before the first run, a maintainer sets
+  # Settings → Pages → Source: GitHub Actions, and the custom domain
+  # licenseforge.io (DNS per GitHub's docs, then Enforce HTTPS).
+  deploy:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: check
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
+      # The site is the repository as is; leave out what isn't served.
+      - name: Stage the site
+        run: |
+          mkdir -p _site
+          rsync -a --exclude _site --exclude .git --exclude .github --exclude scripts --exclude README.md --exclude LICENSE ./ _site/
+      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+      - id: deploy
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
