@@ -15,7 +15,13 @@ python3 scripts/check.py      # go-import tags, CSP hashes, local links
 
 Any static host works. Point `licenseforge.io` at it and serve this directory as is:
 - **Cloudflare Pages or Netlify:** `_headers` sets the CSP and security headers; `_redirects` answers every `/licenseforge/...` path with the go-import page (status 200).
-- **GitHub Pages:** `_headers` and `_redirects` are ignored. The go import still works through `404.html` (below). Set the security headers at a CDN in front if you need them.
+- **GitHub Pages:** `.github/workflows/pages.yml` deploys `main`. Its deploy job fails until a maintainer sets up Pages (below). `_headers` and `_redirects` are ignored there. The go import still works through `404.html` (below). Set the security headers at a CDN in front if you need them.
+
+### Setting up GitHub Pages (once)
+1. **Verify the domain first:** organization Settings → Pages → Verified domains → add `licenseforge.io` and its TXT record. Otherwise, if the site is ever unpublished while DNS still points at GitHub, another account could claim the domain and serve its own `go-import` tag, so that `go get licenseforge.io/...` fetches its code.
+2. Repository Settings → Pages → Source: **GitHub Actions**.
+3. Custom domain `licenseforge.io`: the apex A/AAAA records from GitHub's docs, and `www` as a CNAME to `licenseforge.github.io` if wanted.
+4. **Enforce HTTPS** once the certificate is issued, which can take up to a day.
 
 ## Go vanity import
 
