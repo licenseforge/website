@@ -107,8 +107,8 @@
   const video = $(".demo-video"), play = $(".play");
   if (video) {
     let userPaused = false;
+    if (!reduce) video.controls = false; // the play button and chapters take over
     if (!reduce) new IntersectionObserver(([e]) => { if (e.isIntersecting && !userPaused) video.play().catch(() => {}); else video.pause(); }, { threshold: .4 }).observe(video);
-    else video.controls = true;
     play.hidden = reduce;
     const label = () => { play.textContent = video.paused ? "▶" : "❚❚"; play.setAttribute("aria-label", video.paused ? "Play video" : "Pause video"); };
     video.addEventListener("play", label); video.addEventListener("pause", label);

@@ -29,8 +29,8 @@
       <a href="#how">How it works</a>
       <a href="#demo">Dashboard</a>
       <a href="#features">Features</a>
-      <a href="#pricing">Pricing</a>
-      <a href="https://github.com/licenseforge/licenseforge/blob/main/docs/getting-started.md">Docs</a>
+      <a class="keep" href="#pricing">Pricing</a>
+      <a class="keep" href="https://github.com/licenseforge/licenseforge/blob/main/docs/getting-started.md">Docs</a>
     </nav>
     <a class="btn btn-ghost btn-sm" href="https://github.com/licenseforge/licenseforge"><svg aria-hidden="true" viewBox="0 0 16 16" width="16" height="16"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
   </header>
@@ -49,12 +49,12 @@
         </div>
       </div>
 
-      <div class="hero-card reveal tilt" aria-label="An example license, signed and verified">
+      <div class="hero-card reveal tilt" role="figure" aria-label="An example license, signed and verified">
         <div class="card-head">
           <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
           <span class="mono muted">license.lic</span>
         </div>
-        <pre class="mono token" aria-hidden="true"><span class="k">lf1</span>.<span class="typed" data-text="eyJsaWQiOiJsaWNfYjJhdHR4MnRwdmM0a3diYSIsInByb2R1Y3QiOiJhY21lLWRiIiwicGxhbiI6ImVudGVycHJpc2UiLCJleHAiOiIyMDI3LTExLTEyIn0"></span><span class="caret"></span></pre>
+        <pre class="mono token" aria-hidden="true"><span class="k">lf1</span>.<span class="kid">sk_zsnmkgs5cso3ipye6vuupterhq</span>.<span class="typed" data-text="eyJsaWQiOiJsaWNfYjJhdHR4MnRwdmM0a3diYSIsInByb2R1Y3QiOiJhY21lLWRiIiwicGxhbiI6ImVudGVycHJpc2UiLCJleHAiOiIyMDI3LTExLTEyIn0.3q7ZbWl0vV7cS9Y2nE1kq8Hk4tLd0Rk5o1X2pYJmQvA8fZ6cT0uG9eWb4rN3sK1hD7jLqM2xP5vB8yC6wE0aFg"></span><span class="caret"></span></pre>
         <dl class="claims">
           <div><dt>product</dt><dd>acme-db</dd></div>
           <div><dt>plan</dt><dd>enterprise</dd></div>
@@ -162,7 +162,7 @@
         <article class="flow-step reveal">
           <span class="num">2</span>
           <h3>Issue</h3>
-          <p>From the dashboard, the API, the CLI or your CRM's webhook. Each license snapshots its plan, so later plan changes never surprise a customer.</p>
+          <p>From the dashboard, the API or the CLI; webhooks keep your CRM in step. Each license snapshots its plan, so later plan changes never surprise a customer.</p>
         </article>
         <article class="flow-step reveal">
           <span class="num">3</span>
@@ -172,10 +172,12 @@
       </div>
 
       <div class="code reveal">
+        <div class="code-bar">
         <div class="tabs" role="tablist" aria-label="SDK language">
           <button role="tab" id="tab-go" aria-controls="code-go" aria-selected="true">Go</button>
           <button role="tab" id="tab-ts" aria-controls="code-ts" aria-selected="false" tabindex="-1">TypeScript</button>
           <button role="tab" id="tab-java" aria-controls="code-java" aria-selected="false" tabindex="-1">Java</button>
+          </div>
           <button class="copy" type="button" data-copy>Copy</button>
         </div>
 <pre role="tabpanel" id="code-go" aria-labelledby="tab-go" class="mono"><code><span class="c">// go get licenseforge.io/licenseforge/sdk/go</span>
@@ -195,8 +197,9 @@ claims, status, err := licensefile.<span class="f">Open</span>(text, trustedKeys
 } <span class="k">catch</span> (e) {
   <span class="k">if</span> (e <span class="k">instanceof</span> LicenseError) <span class="f">refuse</span>(e.code); <span class="k">else throw</span> e;
 }</code></pre>
-<pre role="tabpanel" id="code-java" aria-labelledby="tab-java" class="mono" hidden><code><span class="k">try</span> {
-  LicenseFile.Opened lic = LicenseFile.<span class="f">open</span>(Files.<span class="f">readString</span>(Path.<span class="f">of</span>(<span class="s">"license.lic"</span>)), keys,
+<pre role="tabpanel" id="code-java" aria-labelledby="tab-java" class="mono" hidden><code>String text = Files.<span class="f">readString</span>(Path.<span class="f">of</span>(<span class="s">"license.lic"</span>));
+<span class="k">try</span> {
+  LicenseFile.Opened lic = LicenseFile.<span class="f">open</span>(text, keys,
       CheckOptions.<span class="f">of</span>(Instant.<span class="f">now</span>(), <span class="s">"acme-db"</span>).<span class="f">withFingerprint</span>(fingerprint));
   <span class="k">if</span> (lic.<span class="f">status</span>() == LicenseFile.Status.GRACE) <span class="f">warn</span>(<span class="s">"renew soon"</span>);
   <span class="k">if</span> (!lic.<span class="f">claims</span>().<span class="f">entitlements</span>().<span class="f">allows</span>(<span class="s">"nodes"</span>, nodes.<span class="f">size</span>() + <span class="n">1</span>)) <span class="f">refuse</span>(<span class="s">"node limit reached"</span>);
@@ -204,7 +207,7 @@ claims, status, err := licensefile.<span class="f">Open</span>(text, trustedKeys
   <span class="f">refuse</span>(e.<span class="f">code</span>().<span class="f">spec</span>());
 }</code></pre>
       </div>
-      <p class="fine reveal">Online activation, lease refresh with retries, Kubernetes lease stores and offline activation are in all three SDKs. Go is standard library only; TypeScript needs Node 22+, Java 17+.</p>
+      <p class="fine reveal">Online activation, lease refresh with retries, Kubernetes lease stores and offline activation are in all three SDKs. Go is standard library only; TypeScript needs Node 22+, Java 17+. Until their first release, the SDKs build from source: each README says how.</p>
     </section>
 
     <!-- Demo video -->
@@ -213,7 +216,7 @@ claims, status, err := licensefile.<span class="f">Open</span>(text, trustedKeys
       <h2 id="demo-title" class="reveal">From an empty tenant to two licensed machines in 45 seconds.</h2>
       <div class="browser reveal">
         <div class="card-head"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="url mono">licenses.vendor.example</span></div>
-        <video class="demo-video" muted playsinline loop preload="none" poster="/assets/media/demo-poster.webp" aria-label="Screen recording of the LicenseForge dashboard: generating a signing key, creating a product with features and plans, adding a customer, issuing a license, two machines activating, and the audit log.">
+        <video class="demo-video" controls muted playsinline loop preload="none" poster="/assets/media/demo-poster.webp" aria-label="Screen recording of the LicenseForge dashboard: generating a signing key, creating a product with features and plans, adding a customer, issuing a license, two machines activating, and the audit log.">
           <source src="/assets/media/demo.webm" type="video/webm">
           <source src="/assets/media/demo.mp4" type="video/mp4">
         </video>
@@ -241,7 +244,7 @@ claims, status, err := licensefile.<span class="f">Open</span>(text, trustedKeys
       <div class="try-copy">
         <p class="eyebrow reveal">Try it</p>
         <h2 id="try-title" class="reveal">Your laptop, two minutes, the whole thing.</h2>
-        <p class="reveal">One command starts the server, its database and a demo sign-in. Create a product, issue a license, then point an SDK at it and watch the machine show up.</p>
+        <p class="reveal">One command starts the server, its database and a local sign-in. Create your tenant, issue a license, then point an SDK at it and watch the machine show up.</p>
         <ul class="checks reveal">
           <li>Only Docker needed; nothing leaves your machine</li>
           <li>The real dashboard, API and audit log, not a sandbox</li>
@@ -252,7 +255,7 @@ claims, status, err := licensefile.<span class="f">Open</span>(text, trustedKeys
         <div class="card-head"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="mono muted">shell</span><button class="copy" type="button" data-copy>Copy</button></div>
 <pre class="mono" aria-label="Commands to run LicenseForge locally"><code><span class="p">$</span> git clone https://github.com/licenseforge/licenseforge
 <span class="p">$</span> cd licenseforge
-<span class="p">$</span> docker compose --profile demo up --build
+<span class="p">$</span> docker compose up --build
 <span class="o"># open http://localhost:8080 · sign in as demo / demo</span></code></pre>
       </div>
     </section>
@@ -290,27 +293,27 @@ claims, status, err := licensefile.<span class="f">Open</span>(text, trustedKeys
           <a class="btn btn-ghost" href="#try">Try it now</a>
         </article>
         <article class="plan featured reveal">
-          <span class="badge">Early access</span>
+          <span class="badge">Coming later</span>
           <h3>Cloud</h3>
           <p class="price">Per active customer<span>with a free tier to start</span></p>
-          <p class="muted">We run it for you. You pay only for customers who actually used your software that month: replicas and machines don't count.</p>
+          <p class="muted">We will run it for you. You will pay only for customers who actually used your software that month: replicas and machines don't count.</p>
           <ul class="checks">
             <li>Everything in self-hosted</li>
-            <li>Managed upgrades, backups and keys</li>
+            <li>Upgrades, backups and keys handled for you</li>
             <li>Free tier for indie vendors and evaluation</li>
             <li>Design partners help set the price</li>
           </ul>
-          <a class="btn btn-primary" href="https://github.com/licenseforge/licenseforge/discussions">Join early access</a>
+          <a class="btn btn-primary" href="https://github.com/licenseforge/licenseforge/discussions">Join the waitlist</a>
         </article>
         <article class="plan reveal">
           <h3>Enterprise</h3>
-          <p class="price">Flat annual fee<span>negotiated per deal</span></p>
+          <p class="price">Flat fee<span>annual contract, negotiated per deal</span></p>
           <p class="muted">For vendors with few, large customers, or who self-host and want a team behind it.</p>
           <ul class="checks">
             <li>SLA and priority support</li>
             <li>Help with air-gapped and regulated rollouts</li>
             <li>Dedicated tenant or region (Cloud)</li>
-            <li>Support contracts for self-hosters</li>
+            <li>Support contracts for self-hosters, too</li>
           </ul>
           <a class="btn btn-ghost" href="https://github.com/licenseforge/licenseforge/discussions">Talk to us</a>
         </article>
@@ -323,7 +326,7 @@ claims, status, err := licensefile.<span class="f">Open</span>(text, trustedKeys
         <p class="eyebrow reveal">Open source</p>
         <h2 id="oss-title" class="reveal">Apache-2.0. All of it.</h2>
         <p class="reveal">Server, dashboard, SDKs, CLI and Helm chart. No paywalled self-hosting, no phoning home. Your licenses, your keys, your cluster.</p>
-        <p class="reveal muted">LicenseForge is in alpha: the format and API can still change before 1.0. Follow along, try it in a test cluster, and tell us what you need.</p>
+        <p class="reveal muted">LicenseForge is in alpha: the format and API can still change before 1.0, and the SDKs and the newest features (offline activation, webhooks, renewals) are on <code>main</code>, ahead of the next release. Try it locally, and tell us what you need.</p>
         <div class="cta reveal">
           <a class="btn btn-primary" href="https://github.com/licenseforge/licenseforge">Star on GitHub</a>
           <a class="btn btn-ghost" href="https://github.com/licenseforge/licenseforge/blob/main/docs/getting-started.md">Read the guide</a>
@@ -331,13 +334,17 @@ claims, status, err := licensefile.<span class="f">Open</span>(text, trustedKeys
       </div>
       <div class="term reveal">
         <div class="card-head"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="mono muted">shell</span></div>
-<pre class="mono" aria-label="Install commands"><code><span class="p">$</span> helm install licenseforge \
+<pre class="mono" aria-label="Install commands"><code><span class="c"># Production: PostgreSQL 17, an OIDC provider, two Secrets.</span>
+<span class="c"># The full walk-through is in docs/getting-started.md.</span>
+<span class="p">$</span> helm install licenseforge \
     oci://ghcr.io/licenseforge/charts/licenseforge \
     --version &lt;version&gt; -n licenseforge \
+    --set secrets.server=licenseforge-server \
+    --set secrets.migrate=licenseforge-migrate \
+    --set oidc.enabled=true --set oidc.issuer=… \
     --set bootstrapAdmin=you@vendor.example
 <span class="p">$</span> curl https://licenses.vendor.example/readyz
-<span class="o">ok</span>
-<span class="p">$</span> go get licenseforge.io/licenseforge/sdk/go</code></pre>
+<span class="o">ok</span></code></pre>
       </div>
     </section>
   </main>
