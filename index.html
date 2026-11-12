@@ -3,23 +3,363 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>LicenseForge</title>
-  <meta name="description" content="Open-source, Kubernetes-native software licensing. Products, features and plans; signed licenses that work online and air-gapped.">
+  <title>LicenseForge: open-source software licensing</title>
+  <meta name="description" content="Open-source, Kubernetes-native software licensing. Define products, features and plans; issue signed licenses that work online and in air-gapped environments. Apache-2.0.">
   <link rel="canonical" href="https://licenseforge.io/">
-  <style>
-    :root { color-scheme: light dark; --fg: #111; --bg: #fff; --muted: #555; }
-    @media (prefers-color-scheme: dark) { :root { --fg: #eee; --bg: #111; --muted: #aaa; } }
-    body { margin: 0; font: 18px/1.6 system-ui, sans-serif; color: var(--fg); background: var(--bg); }
-    main { max-width: 40rem; margin: 15vh auto; padding: 0 16px; }
-    p { color: var(--muted); }
-    a { color: inherit; }
-  </style>
+  <meta name="theme-color" content="#0c0a09">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="LicenseForge: open-source software licensing">
+  <meta property="og:description" content="Signed licenses that work online and air-gapped. Seats, renewals, revocation and an audit trail, on your own Kubernetes. Apache-2.0.">
+  <meta property="og:url" content="https://licenseforge.io/">
+  <meta property="og:image" content="https://licenseforge.io/assets/media/shot-license.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="/assets/img/logo.svg" type="image/svg+xml">
+  <script>document.documentElement.classList.add("js")</script>
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <script src="/assets/js/site.js" defer></script>
 </head>
 <body>
-  <main>
-    <h1>LicenseForge</h1>
-    <p>Open-source, Kubernetes-native software licensing. Define products, features and plans; issue signed licenses that work online and in air-gapped environments.</p>
-    <p>Coming soon. Follow along on <a href="https://github.com/licenseforge/licenseforge">GitHub</a>.</p>
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="progress" aria-hidden="true"></div>
+
+  <header class="nav">
+    <a class="brand" href="/" aria-label="LicenseForge home"><img src="/assets/img/logo.svg" alt="" width="28" height="28"><span>LicenseForge</span></a>
+    <nav aria-label="Main">
+      <a href="#problems">Why</a>
+      <a href="#how">How it works</a>
+      <a href="#demo">Dashboard</a>
+      <a href="#features">Features</a>
+      <a class="keep" href="#pricing">Pricing</a>
+      <a class="keep" href="https://github.com/licenseforge/licenseforge/blob/main/docs/getting-started.md">Docs</a>
+    </nav>
+    <a class="btn btn-ghost btn-sm" href="https://github.com/licenseforge/licenseforge"><svg aria-hidden="true" viewBox="0 0 16 16" width="16" height="16"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
+  </header>
+
+  <main id="main">
+    <!-- Hero -->
+    <section class="hero" id="top">
+      <canvas class="embers" aria-hidden="true"></canvas>
+      <div class="hero-copy">
+        <p class="pill reveal"><span class="dot"></span> Alpha · Apache-2.0 · self-hosted</p>
+        <h1 class="reveal">Licensing that ships<br><span class="grad">wherever your software goes.</span></h1>
+        <p class="lede reveal">Define products, features and plans. Issue signed licenses your app verifies on its own: online with short leases, or fully air-gapped with license files. Run it on your Kubernetes, keep every key.</p>
+        <div class="cta reveal">
+          <a class="btn btn-primary" href="#try">Try it in 2 minutes</a>
+          <a class="btn btn-ghost" href="#demo">Watch the dashboard <span aria-hidden="true">▶</span></a>
+        </div>
+      </div>
+
+      <div class="hero-card reveal tilt" role="figure" aria-label="An example license, signed and verified">
+        <div class="card-head">
+          <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="mono muted">license.lic</span>
+        </div>
+        <pre class="mono token" aria-hidden="true"><span class="k">lf1</span>.<span class="kid">sk_zsnmkgs5cso3ipye6vuupterhq</span>.<span class="typed" data-text="eyJsaWQiOiJsaWNfYjJhdHR4MnRwdmM0a3diYSIsInByb2R1Y3QiOiJhY21lLWRiIiwicGxhbiI6ImVudGVycHJpc2UiLCJleHAiOiIyMDI3LTExLTEyIn0.3q7ZbWl0vV7cS9Y2nE1kq8Hk4tLd0Rk5o1X2pYJmQvA8fZ6cT0uG9eWb4rN3sK1hD7jLqM2xP5vB8yC6wE0aFg"></span><span class="caret"></span></pre>
+        <dl class="claims">
+          <div><dt>product</dt><dd>acme-db</dd></div>
+          <div><dt>plan</dt><dd>enterprise</dd></div>
+          <div><dt>features</dt><dd><span class="chip">sso</span><span class="chip">audit_export</span></dd></div>
+          <div><dt>expires</dt><dd>2027-11-12</dd></div>
+          <div><dt>bound to</dt><dd class="mono">sha256:9f2c…e41a</dd></div>
+        </dl>
+        <div class="verdict"><span class="seal" aria-hidden="true">✓</span> Ed25519 signature valid · checked offline</div>
+      </div>
+      <a class="scroll-hint" href="#problems" aria-label="Scroll to learn more"><span></span></a>
+    </section>
+
+    <!-- Problems: sticky scrollytelling -->
+    <section class="problems" id="problems" aria-labelledby="problems-title">
+      <div class="problems-intro">
+        <p class="eyebrow reveal">The problems</p>
+        <h2 id="problems-title" class="reveal">Selling software is easy.<br>Keeping it licensed is not.</h2>
+      </div>
+      <div class="story">
+        <div class="stage" aria-hidden="true">
+          <div class="stage-frame">
+            <!-- 1: shared keys -->
+            <div class="scene" data-scene="0">
+              <div class="sc-key mono">LF-JLQPW-…-ZO4DAQ</div>
+              <div class="grid-machines">
+                <i class="m ok"></i><i class="m ok"></i><i class="m ok"></i><i class="m no"></i><i class="m no"></i><i class="m no"></i>
+                <i class="m no"></i><i class="m no"></i><i class="m no"></i><i class="m no"></i><i class="m no"></i><i class="m no"></i>
+              </div>
+              <div class="sc-note"><span class="good">3 seats activated</span> · <span class="bad">9 × activation_limit_reached</span></div>
+            </div>
+            <!-- 2: air gap -->
+            <div class="scene" data-scene="1">
+              <div class="airgap">
+                <div class="zone"><b>Your server</b><span class="muted">LicenseForge</span></div>
+                <div class="wall"><span>air gap</span></div>
+                <div class="zone"><b>Customer site</b><span class="muted">no internet</span></div>
+                <div class="file req mono">lfreq1…</div>
+                <div class="file lic mono">license.lic ✓</div>
+              </div>
+              <div class="sc-note">Request file out, signed license file in. Seats come back with signed receipts.</div>
+            </div>
+            <!-- 3: clock -->
+            <div class="scene" data-scene="2">
+              <div class="clock"><i class="hand h"></i><i class="hand m"></i></div>
+              <div class="sc-note"><span class="bad">Clock set back a year?</span> The clock guard remembers the latest time it has seen. The trial stays over.</div>
+            </div>
+            <!-- 4: revoke & renew -->
+            <div class="scene" data-scene="3">
+              <div class="timeline">
+                <span class="lease"></span><span class="lease"></span><span class="lease"></span><span class="lease cut"></span>
+                <span class="mark revoke">revoked</span>
+              </div>
+              <div class="timeline">
+                <span class="lease"></span><span class="lease"></span><span class="lease"></span><span class="lease"></span><span class="lease"></span>
+                <span class="mark renew">renewed · same key</span>
+              </div>
+              <div class="sc-note">Online use runs on short signed leases. Revoke and the next refresh is refused; renew and it just continues.</div>
+            </div>
+            <!-- 5: kubernetes -->
+            <div class="scene" data-scene="4">
+              <div class="cluster">
+                <span class="label mono">cluster · kube-system uid</span>
+                <i class="pod"></i><i class="pod"></i><i class="pod"></i><i class="pod"></i><i class="pod"></i><i class="pod"></i>
+                <span class="cm mono">ConfigMap: lease</span>
+              </div>
+              <div class="sc-note">Six replicas, one lease, <span class="good">one seat</span>. Scale freely; the license follows the cluster.</div>
+            </div>
+          </div>
+        </div>
+        <ol class="steps">
+          <li class="step" data-step="0">
+            <h3>One key, fifty machines</h3>
+            <p>A license key gets pasted into a forum, a wiki, a CI file. LicenseForge counts activations per machine fingerprint and refuses the seat that goes over the plan's limit. Moving a seat is a support action, not a loophole.</p>
+          </li>
+          <li class="step" data-step="1">
+            <h3>Customers behind an air gap</h3>
+            <p>Banks, defense, factories: their clusters never reach your server. Their app writes a request file; you answer with a signed license file bound to that machine. It expires on time and can't be copied to another host.</p>
+          </li>
+          <li class="step" data-step="2">
+            <h3>Turning the clock back</h3>
+            <p>Every license file and lease carries signed server time. The SDKs' clock guard keeps the latest time it has trusted, so a machine set back a year doesn't get its trial back.</p>
+          </li>
+          <li class="step" data-step="3">
+            <h3>Revoke, suspend, renew</h3>
+            <p>Online apps hold a lease of minutes or days, not a forever license. Suspend or revoke and the next refresh is refused. Renew and the same key keeps working: the machines pick up the new expiry by themselves.</p>
+          </li>
+          <li class="step" data-step="4">
+            <h3>Replicas aren't customers</h3>
+            <p>A Deployment with six replicas shouldn't use six seats. Cluster-bound licenses fingerprint the cluster and share one lease through a ConfigMap or Secret, with RBAC limited to that one object.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section class="how" id="how" aria-labelledby="how-title">
+      <p class="eyebrow reveal">How it works</p>
+      <h2 id="how-title" class="reveal">Three steps from catalog to a checked feature.</h2>
+      <div class="flow">
+        <article class="flow-step reveal">
+          <span class="num">1</span>
+          <h3>Define</h3>
+          <p>Products, features (on/off or limits like <code>nodes</code>) and plans with terms, seat limits, lease length and offline rules. One matrix decides what each plan includes.</p>
+        </article>
+        <article class="flow-step reveal">
+          <span class="num">2</span>
+          <h3>Issue</h3>
+          <p>From the dashboard, the API or the CLI; webhooks keep your CRM in step. Each license snapshots its plan, so later plan changes never surprise a customer.</p>
+        </article>
+        <article class="flow-step reveal">
+          <span class="num">3</span>
+          <h3>Verify</h3>
+          <p>Your app embeds your public keys and checks the signed file itself: product, machine, expiry, features. No network call on the hot path.</p>
+        </article>
+      </div>
+
+      <div class="code reveal">
+        <div class="code-bar">
+        <div class="tabs" role="tablist" aria-label="SDK language">
+          <button role="tab" id="tab-go" aria-controls="code-go" aria-selected="true">Go</button>
+          <button role="tab" id="tab-ts" aria-controls="code-ts" aria-selected="false" tabindex="-1">TypeScript</button>
+          <button role="tab" id="tab-java" aria-controls="code-java" aria-selected="false" tabindex="-1">Java</button>
+          </div>
+          <button class="copy" type="button" data-copy>Copy</button>
+        </div>
+<pre role="tabpanel" id="code-go" aria-labelledby="tab-go" class="mono"><code><span class="c">// go get licenseforge.io/licenseforge/sdk/go</span>
+claims, status, err := licensefile.<span class="f">Open</span>(text, trustedKeys, licensefile.CheckOptions{
+	Now: time.<span class="f">Now</span>(), Product: <span class="s">"acme-db"</span>, Fingerprint: fp,
+})
+<span class="k">if</span> err != <span class="k">nil</span> { <span class="f">refuse</span>(err) } <span class="c">// bad_signature, expired, wrong machine, …</span>
+<span class="k">if</span> status == licensefile.StatusGrace { <span class="f">warn</span>(<span class="s">"renew soon"</span>) }
+<span class="k">if</span> !claims.Entitlements.<span class="f">Allows</span>(<span class="s">"nodes"</span>, <span class="f">int64</span>(<span class="f">len</span>(nodes)+<span class="n">1</span>)) { <span class="f">refuse</span>(<span class="s">"node limit reached"</span>) }</code></pre>
+<pre role="tabpanel" id="code-ts" aria-labelledby="tab-ts" class="mono" hidden><code><span class="k">import</span> { open, parseKeySet, LicenseError } <span class="k">from</span> <span class="s">"@licenseforge/sdk"</span>;
+
+<span class="k">const</span> keys = <span class="f">parseKeySet</span>(<span class="f">readFileSync</span>(<span class="s">"./licenseforge-keys.json"</span>));
+<span class="k">try</span> {
+  <span class="k">const</span> { claims, status } = <span class="f">open</span>(licenseText, keys, { now: <span class="k">new</span> <span class="f">Date</span>(), product: <span class="s">"acme-db"</span>, fingerprint });
+  <span class="k">if</span> (status === <span class="s">"grace"</span>) <span class="f">warn</span>(<span class="s">"renew soon"</span>);
+  <span class="k">if</span> (!claims.entitlements.<span class="f">allows</span>(<span class="s">"nodes"</span>, nodes.length + <span class="n">1</span>)) <span class="f">refuse</span>(<span class="s">"node limit reached"</span>);
+} <span class="k">catch</span> (e) {
+  <span class="k">if</span> (e <span class="k">instanceof</span> LicenseError) <span class="f">refuse</span>(e.code); <span class="k">else throw</span> e;
+}</code></pre>
+<pre role="tabpanel" id="code-java" aria-labelledby="tab-java" class="mono" hidden><code>String text = Files.<span class="f">readString</span>(Path.<span class="f">of</span>(<span class="s">"license.lic"</span>));
+<span class="k">try</span> {
+  LicenseFile.Opened lic = LicenseFile.<span class="f">open</span>(text, keys,
+      CheckOptions.<span class="f">of</span>(Instant.<span class="f">now</span>(), <span class="s">"acme-db"</span>).<span class="f">withFingerprint</span>(fingerprint));
+  <span class="k">if</span> (lic.<span class="f">status</span>() == LicenseFile.Status.GRACE) <span class="f">warn</span>(<span class="s">"renew soon"</span>);
+  <span class="k">if</span> (!lic.<span class="f">claims</span>().<span class="f">entitlements</span>().<span class="f">allows</span>(<span class="s">"nodes"</span>, nodes.<span class="f">size</span>() + <span class="n">1</span>)) <span class="f">refuse</span>(<span class="s">"node limit reached"</span>);
+} <span class="k">catch</span> (LicenseException e) {
+  <span class="f">refuse</span>(e.<span class="f">code</span>().<span class="f">spec</span>());
+}</code></pre>
+      </div>
+      <p class="fine reveal">Online activation, lease refresh with retries, Kubernetes lease stores and offline activation are in all three SDKs. Go is standard library only; TypeScript needs Node 22+, Java 17+. Until their first release, the SDKs build from source: each README says how.</p>
+    </section>
+
+    <!-- Demo video -->
+    <section class="demo" id="demo" aria-labelledby="demo-title">
+      <p class="eyebrow reveal">The dashboard</p>
+      <h2 id="demo-title" class="reveal">From an empty tenant to two licensed machines in 45 seconds.</h2>
+      <div class="browser reveal">
+        <div class="card-head"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="url mono">licenses.vendor.example</span></div>
+        <video class="demo-video" controls muted playsinline loop preload="none" poster="/assets/media/demo-poster.webp" aria-label="Screen recording of the LicenseForge dashboard: generating a signing key, creating a product with features and plans, adding a customer, issuing a license, two machines activating, and the audit log.">
+          <source src="/assets/media/demo.webm" type="video/webm">
+          <source src="/assets/media/demo.mp4" type="video/mp4">
+        </video>
+        <button class="play" type="button" aria-label="Pause video" hidden>❚❚</button>
+      </div>
+      <div class="chapters reveal" role="group" aria-label="Jump to a part of the video">
+        <button data-t="0">Signing key</button>
+        <button data-t="3.7">Products &amp; features</button>
+        <button data-t="14.8">Plans</button>
+        <button data-t="25.9">Customer</button>
+        <button data-t="29.6">Issue a license</button>
+        <button data-t="37">Machines</button>
+        <button data-t="40.7">Audit log</button>
+      </div>
+      <div class="shots">
+        <button class="shot reveal" data-full="/assets/media/shot-keys.webp"><img src="/assets/media/shot-keys.webp" alt="Signing keys page with the tenant ID and the trusted key set as Go and JSON" loading="lazy" width="1280" height="800"><span>Your keys, ready to embed</span></button>
+        <button class="shot reveal" data-full="/assets/media/shot-license.webp"><img src="/assets/media/shot-license.webp" alt="A license with its expiry, entitlements and two activated machines" loading="lazy" width="1280" height="800"><span>Seats, machines, maintenance</span></button>
+        <button class="shot reveal" data-full="/assets/media/shot-audit.webp"><img src="/assets/media/shot-audit.webp" alt="The hash-chained audit log listing every change" loading="lazy" width="1280" height="800"><span>A tamper-evident audit log</span></button>
+      </div>
+      <dialog class="lightbox" aria-label="Screenshot"><img alt=""><form method="dialog"><button aria-label="Close">✕</button></form></dialog>
+    </section>
+
+    <!-- Try it -->
+    <section class="try" id="try" aria-labelledby="try-title">
+      <div class="try-copy">
+        <p class="eyebrow reveal">Try it</p>
+        <h2 id="try-title" class="reveal">Your laptop, two minutes, the whole thing.</h2>
+        <p class="reveal">One command starts the server, its database and a local sign-in. Create your tenant, issue a license, then point an SDK at it and watch the machine show up.</p>
+        <ul class="checks reveal">
+          <li>Only Docker needed; nothing leaves your machine</li>
+          <li>The real dashboard, API and audit log, not a sandbox</li>
+          <li>Throw it away with <code>docker compose down -v</code></li>
+        </ul>
+      </div>
+      <div class="term reveal">
+        <div class="card-head"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="mono muted">shell</span><button class="copy" type="button" data-copy>Copy</button></div>
+<pre class="mono" aria-label="Commands to run LicenseForge locally"><code><span class="p">$</span> git clone https://github.com/licenseforge/licenseforge
+<span class="p">$</span> cd licenseforge
+<span class="p">$</span> docker compose up --build
+<span class="o"># open http://localhost:8080 · sign in as demo / demo</span></code></pre>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features" id="features" aria-labelledby="features-title">
+      <p class="eyebrow reveal">Built for vendors who sell to serious customers</p>
+      <h2 id="features-title" class="reveal">Everything around the license, too.</h2>
+      <div class="bento">
+        <article class="tile wide reveal"><h3>Signed, verifiable, specified</h3><p>Ed25519 signatures over an open, versioned format with conformance vectors every SDK runs. Rotate signing keys without breaking shipped builds.</p></article>
+        <article class="tile reveal"><h3>Kubernetes-native</h3><p>Helm chart, hardened by default: non-root, read-only filesystem, NetworkPolicy, secrets as files.</p></article>
+        <article class="tile reveal"><h3>Multi-tenant</h3><p>PostgreSQL row-level security on every tenant table, OIDC login, per-tenant MFA policy, scoped API tokens.</p></article>
+        <article class="tile reveal"><h3>Audit you can prove</h3><p>A hash-chained audit log of every change and refusal, exportable to your SIEM.</p></article>
+        <article class="tile reveal"><h3>Webhooks</h3><p>License and activation events with Standard Webhooks signatures, delivered with retries and an SSRF guard.</p></article>
+        <article class="tile reveal"><h3>Maintenance &amp; renewals</h3><p>Perpetual with updates-until, subscriptions renewed in place, grace periods, trials and site licenses.</p></article>
+        <article class="tile wide reveal"><h3>Compliance from day one</h3><p>FIPS 140-3 mode for the Go server and SDK, a NIST 800-53 control matrix in OSCAL, signed releases with SBOMs and SLSA provenance.</p></article>
+      </div>
+    </section>
+
+    <!-- Pricing -->
+    <section class="pricing" id="pricing" aria-labelledby="pricing-title">
+      <p class="eyebrow reveal">Pricing</p>
+      <h2 id="pricing-title" class="reveal">Free to run. Pay when we run it for you.</h2>
+      <div class="plans">
+        <article class="plan reveal">
+          <h3>Self-hosted</h3>
+          <p class="price">Free<span>forever, every feature</span></p>
+          <p class="muted">Every feature, Apache-2.0. Your cluster, your database, your keys.</p>
+          <ul class="checks">
+            <li>Unlimited products, licenses and machines</li>
+            <li>Online and air-gapped activation</li>
+            <li>Go, TypeScript and Java SDKs</li>
+            <li>Community support on GitHub</li>
+          </ul>
+          <a class="btn btn-ghost" href="#try">Try it now</a>
+        </article>
+        <article class="plan featured reveal">
+          <span class="badge">Coming later</span>
+          <h3>Cloud</h3>
+          <p class="price">Per active customer<span>with a free tier to start</span></p>
+          <p class="muted">We will run it for you. You will pay only for customers who actually used your software that month: replicas and machines don't count.</p>
+          <ul class="checks">
+            <li>Everything in self-hosted</li>
+            <li>Upgrades, backups and keys handled for you</li>
+            <li>Free tier for indie vendors and evaluation</li>
+            <li>Design partners help set the price</li>
+          </ul>
+          <a class="btn btn-primary" href="https://github.com/licenseforge/licenseforge/discussions">Join the waitlist</a>
+        </article>
+        <article class="plan reveal">
+          <h3>Enterprise</h3>
+          <p class="price">Flat fee<span>annual contract, negotiated per deal</span></p>
+          <p class="muted">For vendors with few, large customers, or who self-host and want a team behind it.</p>
+          <ul class="checks">
+            <li>SLA and priority support</li>
+            <li>Help with air-gapped and regulated rollouts</li>
+            <li>Dedicated tenant or region (Cloud)</li>
+            <li>Support contracts for self-hosters, too</li>
+          </ul>
+          <a class="btn btn-ghost" href="https://github.com/licenseforge/licenseforge/discussions">Talk to us</a>
+        </article>
+      </div>
+    </section>
+
+    <!-- Open source -->
+    <section class="oss" id="open-source" aria-labelledby="oss-title">
+      <div class="oss-copy">
+        <p class="eyebrow reveal">Open source</p>
+        <h2 id="oss-title" class="reveal">Apache-2.0. All of it.</h2>
+        <p class="reveal">Server, dashboard, SDKs, CLI and Helm chart. No paywalled self-hosting, no phoning home. Your licenses, your keys, your cluster.</p>
+        <p class="reveal muted">LicenseForge is in alpha: the format and API can still change before 1.0, and the SDKs and the newest features (offline activation, webhooks, renewals) are on <code>main</code>, ahead of the next release. Try it locally, and tell us what you need.</p>
+        <div class="cta reveal">
+          <a class="btn btn-primary" href="https://github.com/licenseforge/licenseforge">Star on GitHub</a>
+          <a class="btn btn-ghost" href="https://github.com/licenseforge/licenseforge/blob/main/docs/getting-started.md">Read the guide</a>
+        </div>
+      </div>
+      <div class="term reveal">
+        <div class="card-head"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="mono muted">shell</span></div>
+<pre class="mono" aria-label="Install commands"><code><span class="c"># Production: PostgreSQL 17+, an OIDC provider, two Secrets.</span>
+<span class="c"># The full walk-through is in docs/getting-started.md.</span>
+<span class="p">$</span> helm install licenseforge \
+    oci://ghcr.io/licenseforge/charts/licenseforge \
+    --version &lt;version&gt; -n licenseforge \
+    --set secrets.server=licenseforge-server \
+    --set secrets.migrate=licenseforge-migrate \
+    --set oidc.enabled=true --set oidc.issuer=… \
+    --set oidc.clientID=… --set oidc.redirectURL=… \
+    --set bootstrapAdmin=you@vendor.example
+<span class="p">$</span> curl https://licenses.vendor.example/readyz
+<span class="o">ok</span></code></pre>
+      </div>
+    </section>
   </main>
+
+  <footer class="foot">
+    <div class="brand"><img src="/assets/img/logo.svg" alt="" width="22" height="22"><span>LicenseForge</span></div>
+    <nav aria-label="Footer">
+      <a href="https://github.com/licenseforge/licenseforge">GitHub</a>
+      <a href="https://github.com/licenseforge/licenseforge/blob/main/docs/getting-started.md">Getting started</a>
+      <a href="https://github.com/licenseforge/licenseforge/blob/main/spec/license-format.md">License format</a>
+      <a href="https://github.com/licenseforge/licenseforge/blob/main/docs/verifying-releases.md">Verifying releases</a>
+      <a href="https://github.com/licenseforge/.github/blob/main/SECURITY.md">Security</a>
+    </nav>
+    <p class="muted">Apache License 2.0. "LicenseForge" is a trademark of its authors.</p>
+  </footer>
 </body>
 </html>
