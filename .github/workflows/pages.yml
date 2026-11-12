@@ -21,9 +21,8 @@ jobs:
       - name: Check the site
         run: if [ -f scripts/check.py ]; then python3 scripts/check.py; fi
 
-  # Deploys main to GitHub Pages. Before the first run, a maintainer sets
-  # Settings → Pages → Source: GitHub Actions, and the custom domain
-  # licenseforge.io (DNS per GitHub's docs, then Enforce HTTPS).
+  # Deploys main to GitHub Pages. One-time setup: README → "Setting up
+  # GitHub Pages" (verify the domain first).
   deploy:
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     needs: check
