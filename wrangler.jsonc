@@ -1,0 +1,11 @@
+// Cloudflare Workers static assets (README → Hosting). No Worker script:
+// Cloudflare serves _site/ directly, applying _headers and _redirects.
+{
+  "name": "website",
+  "compatibility_date": "2026-10-01",
+  "build": { "command": "sh scripts/stage.sh" },
+  "assets": {
+    "directory": "./_site",
+    "not_found_handling": "404-page"
+  }
+}
