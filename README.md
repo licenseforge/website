@@ -13,21 +13,22 @@ python3 scripts/check.py      # go-import tags, CSP hashes, local links
 
 ## Hosting
 
-Cloudflare Pages serves the site from its Git integration: every push to `main` deploys, and every branch or pull request from this repository gets a preview URL (pull requests from forks don't). Nothing deploys from GitHub Actions, and no Cloudflare token is stored in GitHub. `.github/workflows/pages.yml` only checks the site.
+Cloudflare Workers serves the site as static assets, from its Git integration (Workers Builds): every push to `main` deploys, and every branch or pull request from this repository gets a preview build (pull requests from forks don't). Nothing deploys from GitHub Actions, and no Cloudflare token is stored in GitHub. `.github/workflows/pages.yml` only checks the site.
+- `wrangler.jsonc` configures it: the build runs `scripts/stage.sh`, and `_site/` is served, with `404.html` for unknown paths. There is no Worker script.
 - `scripts/stage.sh` copies what is served into `_site/`, so the README, scripts and workflows stay unpublished.
 - `_headers` sets the CSP and security headers.
 - `_redirects` answers every `/licenseforge/...` path with the go-import page (status 200).
 
-Preview the Pages behaviour locally: `scripts/stage.sh && npx -y wrangler@4 pages dev _site`.
+Preview locally: `npx -y wrangler@4 dev` (it runs the build first).
 
-### Setting up Cloudflare Pages (once)
-1. Add `licenseforge.io` to Cloudflare as a zone, and switch the domain's nameservers at the registrar to the two Cloudflare gives you. An apex custom domain on Pages needs the zone on Cloudflare.
-2. Workers & Pages → Create → Pages → **Connect to Git** → install the Cloudflare GitHub app on the `licenseforge` organisation, for this repository only → pick `licenseforge/website`.
-3. Build settings: framework preset **None**, build command `sh scripts/stage.sh`, build output directory `_site`, production branch `main`.
-4. Project → Custom domains → add `licenseforge.io`, and `www.licenseforge.io` if wanted. Cloudflare creates the DNS records and the certificate.
+### Setting up Cloudflare (once)
+1. Add `licenseforge.io` to Cloudflare as a zone, and switch the domain's nameservers at the registrar to the two Cloudflare gives you.
+2. Workers & Pages → Create → **Import a repository** → install the Cloudflare GitHub app on the `licenseforge` organisation, for this repository only → pick `licenseforge/website`.
+3. Build settings: leave the build command empty (`wrangler.jsonc` runs the stage script), deploy command `npx wrangler deploy`, root directory `/`. The project name must be `website`, matching `wrangler.jsonc`.
+4. Worker → Settings → Domains & Routes → add the custom domain `licenseforge.io`, and `www.licenseforge.io` if wanted. Cloudflare creates the DNS records and the certificate.
 5. Zone → SSL/TLS → Edge Certificates: turn on **Always Use HTTPS** and HSTS.
 
-Whenever the Pages project or one of its custom domains is removed, delete the matching DNS records too, especially a subdomain CNAME such as `www`: Cloudflare leaves them in place. An apex custom domain can only be attached from the account that owns the zone, but a leftover subdomain CNAME pointing at a freed `*.pages.dev` name could be claimed by another account.
+If the Worker or one of its custom domains is ever removed, check the zone's DNS records and delete any that are left.
 
 ## Go vanity import
 
