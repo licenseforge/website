@@ -289,13 +289,15 @@ body::after { content: ""; position: fixed; inset: 0; z-index: 90; pointer-event
    three steps show as cards. --p is the scroll progress through .forge. */
 .anvil { display: none; }
 .forging { --p: 0; height: 300vh; margin-top: 24px; }
-.forging .forge-pin { position: sticky; top: 0; height: 100vh; display: grid; grid-template-columns: 1.15fr .85fr; align-items: center; gap: 56px; }
+.forging .forge-pin { position: sticky; top: 68px; height: calc(100svh - 68px); display: grid; grid-template-columns: 1.15fr .85fr; align-items: center; gap: 56px; }
 .forging .flow { grid-template-columns: 1fr; gap: 14px; margin: 0; }
-.forging .flow-step { padding: 22px 24px; opacity: .3; transition: opacity .5s var(--ease), border-color .5s, transform .5s var(--ease); }
+.forging .flow-step p { max-height: 0; margin: 0; opacity: 0; overflow: hidden; transition: max-height .5s var(--ease), opacity .5s, margin .5s; }
+.forging .flow-step.on p { max-height: 12em; margin-top: 10px; opacity: 1; }
+.forging .flow-step { padding: 20px 24px; opacity: .45; transition: opacity .5s var(--ease), border-color .5s, transform .5s var(--ease); }
 .forging .flow-step.on { opacity: 1; border-color: rgba(255, 122, 61, .55); transform: translateX(-6px); }
 .forging .flow-step .num { margin-bottom: 10px; }
-.forging .anvil { display: grid; place-items: center; position: relative; height: min(70vh, 520px); border: 1px solid var(--line); border-radius: 24px; background: radial-gradient(circle at 50% 55%, rgba(255, 106, 31, calc(var(--heat) * .22)), transparent 65%), var(--bg-2); --heat: clamp(0, calc(1 - (var(--p) - .22) * 2.4), 1); }
-.ingot { grid-area: 1 / 1; display: grid; width: min(86%, 440px); padding: 26px 24px; border-radius: 14px; border: 1px solid color-mix(in oklab, #ffd08a calc(var(--heat) * 100%), var(--line));
+.forging .anvil { display: grid; place-items: center; position: relative; height: min(calc(100svh - 140px), 520px); border: 1px solid var(--line); border-radius: 24px; background: radial-gradient(circle at 50% 55%, rgba(255, 106, 31, calc(var(--heat) * .22)), transparent 65%), var(--bg-2); --heat: clamp(0, calc(1 - (var(--p) - .22) * 2.4), 1); }
+.ingot { grid-area: 1 / 1; display: grid; width: min(86%, 440px); padding: 26px 24px; border-radius: 14px; border: 1px solid var(--line); background: #1b1714; color: #e3d9d0; border: 1px solid color-mix(in oklab, #ffd08a calc(var(--heat) * 100%), var(--line));
   background: radial-gradient(120% 90% at 30% 20%, rgba(255, 240, 200, calc(var(--heat) * .9)), transparent 60%), color-mix(in oklab, #ff6a1f calc(var(--heat) * 100%), #1b1714);
   color: color-mix(in oklab, #4a1606 calc(var(--heat) * 100%), #e3d9d0);
   box-shadow: 0 0 calc(var(--heat) * 90px) calc(var(--heat) * 6px) rgba(255, 100, 30, .55), 0 30px 60px -30px rgba(0, 0, 0, .9);
@@ -322,7 +324,8 @@ body::after { content: ""; position: fixed; inset: 0; z-index: 90; pointer-event
 @keyframes thud { 30% { translate: 0 5px; } 60% { translate: 0 -2px; } }
 @media (max-width: 900px) {
   .forging .forge-pin { grid-template-columns: 1fr; grid-template-rows: auto auto; align-content: center; gap: 20px; }
-  .forging .anvil { height: 46vh; }
+  .forging .anvil { height: min(42svh, 340px); }
+  .forging .flow-step p { max-height: none; }
   .forging .flow { display: grid; }
   .forging .flow-step, .forging .flow-step.on { grid-area: 1 / 1; transform: none; }
   .forging .flow-step:not(.on) { opacity: 0; }
