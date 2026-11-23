@@ -107,11 +107,11 @@ void main(){
     };
     size();
     cv.addEventListener("webglcontextlost", () => { cancelAnimationFrame(raf); running = true; cv.remove(); });
-    if (reduce) { draw(40000); addEventListener("resize", () => { size(); draw(40000); }); }
+    if (reduce) new ResizeObserver(() => { size(); draw(40000); }).observe(cv);
     else {
       const frame = (now) => { draw(now); raf = requestAnimationFrame(frame); };
       const set = (on) => { if (on && !running) { running = true; raf = requestAnimationFrame(frame); } else if (!on && running) { running = false; cancelAnimationFrame(raf); } };
-      addEventListener("resize", size);
+      new ResizeObserver(size).observe(cv);
       hero.addEventListener("pointermove", (e) => {
         const r = cv.getBoundingClientRect();
         tx = (e.clientX - r.left) * scale / H; ty = (r.bottom - e.clientY) * scale / H;
@@ -126,15 +126,25 @@ void main(){
   // claims to a signed token (CSS reads --p); entering step 2 strikes it,
   // step 3 seals it. The matching step card lights up.
   // Short windows (phone landscape) keep the plain cards.
-  const forge = $(".forge"), tall = matchMedia("(min-height: 560px)");
+  const forge = $(".forge"), tall = matchMedia("(min-height: 580px)");
   if (forge && !reduce) {
     const cards = $$(".flow-step", forge), pin = $(".forge-pin", forge);
     cards.forEach((c) => c.classList.remove("reveal"));
     $$(".spark", forge).forEach((el, i) => el.style.setProperty("--i", i));
-    let phase = -1;
+    let phase = -1, seen = false;
     const onForge = () => {
-      if (forge.classList.toggle("forging", tall.matches) === false) return;
-      const r = forge.getBoundingClientRect(), top = parseFloat(getComputedStyle(pin).top) || 0;
+      const on = tall.matches;
+      if (on !== forge.classList.contains("forging")) {
+        // The section's height changes a lot (e.g. a phone rotated): if the
+        // reader was in it, keep them there. `seen` is from before the
+        // resize, since 300vh already shrinks with the viewport.
+        forge.classList.toggle("forging", on);
+        if (seen) (on ? forge : cards[Math.max(0, phase)]).scrollIntoView({ block: on ? "start" : "center", behavior: "instant" });
+      }
+      const r = forge.getBoundingClientRect();
+      seen = r.top < innerHeight && r.bottom > 0;
+      if (!on) return;
+      const top = parseFloat(getComputedStyle(pin).top) || 0;
       const p = Math.min(1, Math.max(0, (top - r.top) / Math.max(1, r.height - pin.offsetHeight)));
       forge.style.setProperty("--p", p.toFixed(4));
       const n = p < .3 ? 0 : p < .62 ? 1 : 2;
