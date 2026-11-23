@@ -2,7 +2,7 @@
 
 Source of the [licenseforge.io](https://licenseforge.io) landing page and of the Go vanity import path `licenseforge.io/licenseforge`.
 
-Plain static files, no build step: `index.html`, `assets/` (CSS, JS, images, the dashboard recording), `404.html`, `licenseforge/index.html`.
+Plain static files; the only build step copies the served ones (`scripts/stage.sh`): `index.html`, `assets/` (CSS, JS, images, the dashboard recording), `404.html`, `licenseforge/index.html`.
 
 ## Preview
 
@@ -13,12 +13,12 @@ python3 scripts/check.py      # go-import tags, CSP hashes, local links
 
 ## Hosting
 
-Cloudflare Pages serves the site from its Git integration: every push to `main` deploys, and every pull request gets a preview URL. Nothing deploys from GitHub Actions, and no Cloudflare token is stored in GitHub. `.github/workflows/pages.yml` only checks the site.
+Cloudflare Pages serves the site from its Git integration: every push to `main` deploys, and every branch or pull request from this repository gets a preview URL (pull requests from forks don't). Nothing deploys from GitHub Actions, and no Cloudflare token is stored in GitHub. `.github/workflows/pages.yml` only checks the site.
 - `scripts/stage.sh` copies what is served into `_site/`, so the README, scripts and workflows stay unpublished.
 - `_headers` sets the CSP and security headers.
 - `_redirects` answers every `/licenseforge/...` path with the go-import page (status 200).
 
-Preview the Pages behaviour locally: `scripts/stage.sh && npx wrangler pages dev _site`.
+Preview the Pages behaviour locally: `scripts/stage.sh && npx -y wrangler@4 pages dev _site`.
 
 ### Setting up Cloudflare Pages (once)
 1. Add `licenseforge.io` to Cloudflare as a zone, and switch the domain's nameservers at the registrar to the two Cloudflare gives you. An apex custom domain on Pages needs the zone on Cloudflare.
@@ -27,7 +27,7 @@ Preview the Pages behaviour locally: `scripts/stage.sh && npx wrangler pages dev
 4. Project → Custom domains → add `licenseforge.io`, and `www.licenseforge.io` if wanted. Cloudflare creates the DNS records and the certificate.
 5. Zone → SSL/TLS → Edge Certificates: turn on **Always Use HTTPS** and HSTS.
 
-If the Pages project is ever deleted, delete its DNS records for `licenseforge.io` as well. A record left pointing at a freed `*.pages.dev` name could let another account serve its own `go-import` tag, and `go get licenseforge.io/...` would then fetch that account's code.
+Whenever the Pages project or one of its custom domains is removed, delete the matching DNS records too, especially a subdomain CNAME such as `www`: Cloudflare leaves them in place. An apex custom domain can only be attached from the account that owns the zone, but a leftover subdomain CNAME pointing at a freed `*.pages.dev` name could be claimed by another account.
 
 ## Go vanity import
 
