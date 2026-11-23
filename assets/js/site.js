@@ -42,8 +42,9 @@
 
   // Molten metal behind the hero: a WebGL fragment shader (domain-warped
   // noise on a blackbody palette), drawn at half resolution. The pointer
-  // heats the metal near it; scrolling away cools it. One still frame with
-  // reduced motion; the CSS gradient shows if WebGL is unavailable.
+  // heats the metal near it; scrolling away cools it. Behind the copy it
+  // stays dim enough for AA contrast. One still frame with reduced motion;
+  // the CSS gradient shows if WebGL is unavailable or its context is lost.
   const cv = $(".molten"), hero = $(".hero");
   const gl = cv && cv.getContext("webgl", { alpha: false, antialias: false, depth: false, powerPreference: "low-power" });
   const prog = gl && (() => {
@@ -56,7 +57,7 @@ precision highp float;
 #else
 precision mediump float;
 #endif
-uniform vec2 r; uniform float t, h; uniform vec2 m;
+uniform vec2 r; uniform float t, h; uniform vec2 m; uniform vec4 c;
 float hs(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}
 float n(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);
   return mix(mix(hs(i),hs(i+vec2(1.,0.)),f.x),mix(hs(i+vec2(0.,1.)),hs(i+1.),f.x),f.y);}
@@ -70,9 +71,11 @@ void main(){
   float k=(v*(.45+.8*q.y)+g*(.2+.7*v))*h
     *mix(.3,1.,smoothstep(.1,.85,gl_FragCoord.x/r.x))
     *smoothstep(0.,.45,gl_FragCoord.y/r.y)*(1.-.65*smoothstep(.78,1.,gl_FragCoord.y/r.y));
-  vec3 c=vec3(.047,.039,.035)+vec3(1.,.42,.12)*smoothstep(0.,.55,k)
+  vec2 d=max(max(c.xy-gl_FragCoord.xy,gl_FragCoord.xy-c.zw),0.);
+  k=mix(min(k,.18),k,smoothstep(0.,.08*r.y,length(d)));
+  vec3 o=vec3(.047,.039,.035)+vec3(1.,.42,.12)*smoothstep(0.,.55,k)
     +vec3(0.,.3,.25)*smoothstep(.45,1.,k)+vec3(0.,0.,.35)*smoothstep(.8,1.3,k);
-  gl_FragColor=vec4(c,1.);
+  gl_FragColor=vec4(o,1.);
 }`);
     gl.bindAttribLocation(pr, 0, "a");
     gl.linkProgram(pr);
@@ -86,21 +89,24 @@ void main(){
     gl.enableVertexAttribArray(0);
     gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
     const u = (n) => gl.getUniformLocation(prog, n);
-    const uR = u("r"), uT = u("t"), uH = u("h"), uM = u("m");
+    const uR = u("r"), uT = u("t"), uH = u("h"), uM = u("m"), uC = u("c");
     const scale = .5;
     let H = 1, mx = -9, my = -9, tx = -9, ty = -9, running = false, raf;
     const size = () => {
       cv.width = Math.max(1, Math.round(cv.clientWidth * scale)); H = cv.height = Math.max(1, Math.round(cv.clientHeight * scale));
       gl.viewport(0, 0, cv.width, H); gl.uniform2f(uR, cv.width, H);
+      const r = cv.getBoundingClientRect(), t = $(".hero-copy").getBoundingClientRect();
+      gl.uniform4f(uC, (t.left - r.left) * scale, (r.bottom - t.bottom) * scale, (t.right - r.left) * scale, (r.bottom - t.top) * scale);
     };
     const draw = (now) => {
       mx += (tx - mx) * .06; my += (ty - my) * .06;
-      gl.uniform1f(uT, (now / 1000) % 1000);
+      gl.uniform1f(uT, (now / 1000) % 3600);
       gl.uniform1f(uH, 1 - .65 * Math.min(1, scrollY / hero.offsetHeight));
       gl.uniform2f(uM, mx, my);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
     };
     size();
+    cv.addEventListener("webglcontextlost", () => { cancelAnimationFrame(raf); running = true; cv.remove(); });
     if (reduce) { draw(40000); addEventListener("resize", () => { size(); draw(40000); }); }
     else {
       const frame = (now) => { draw(now); raf = requestAnimationFrame(frame); };
@@ -119,16 +125,17 @@ void main(){
   // The forge: progress through the pinned section moves the ingot from hot
   // claims to a signed token (CSS reads --p); entering step 2 strikes it,
   // step 3 seals it. The matching step card lights up.
-  const forge = $(".forge");
+  // Short windows (phone landscape) keep the plain cards.
+  const forge = $(".forge"), tall = matchMedia("(min-height: 560px)");
   if (forge && !reduce) {
-    forge.classList.add("forging");
-    const cards = $$(".flow-step", forge);
+    const cards = $$(".flow-step", forge), pin = $(".forge-pin", forge);
     cards.forEach((c) => c.classList.remove("reveal"));
     $$(".spark", forge).forEach((el, i) => el.style.setProperty("--i", i));
     let phase = -1;
     const onForge = () => {
-      const r = forge.getBoundingClientRect();
-      const p = Math.min(1, Math.max(0, -r.top / Math.max(1, r.height - innerHeight)));
+      if (forge.classList.toggle("forging", tall.matches) === false) return;
+      const r = forge.getBoundingClientRect(), top = parseFloat(getComputedStyle(pin).top) || 0;
+      const p = Math.min(1, Math.max(0, (top - r.top) / Math.max(1, r.height - pin.offsetHeight)));
       forge.style.setProperty("--p", p.toFixed(4));
       const n = p < .3 ? 0 : p < .62 ? 1 : 2;
       if (n === phase) return;
