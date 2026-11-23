@@ -30,7 +30,7 @@ h1, h2, h3 { line-height: 1.1; letter-spacing: -.025em; margin: 0; }
 h2 { font-size: clamp(2rem, 4.5vw, 3.4rem); max-width: 24ch; text-wrap: balance; }
 h3 { font-size: 1.2rem; letter-spacing: -.01em; }
 .muted { color: var(--muted); }
-.grad { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.grad { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; text-shadow: none; }
 .skip { position: absolute; left: -999px; top: 8px; background: var(--fg); color: var(--bg); padding: 8px 12px; border-radius: 8px; z-index: 100; }
 .skip:focus { left: 16px; }
 :focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; border-radius: 6px; }
@@ -66,8 +66,8 @@ section { padding: clamp(80px, 12vw, 160px) max(16px, calc((100vw - 1160px) / 2)
 .hero { min-height: 100svh; display: grid; grid-template-columns: 1.1fr .9fr; align-items: center; gap: 56px; padding-top: 120px; overflow: hidden; }
 .hero::before { content: ""; position: absolute; inset: -20% -10% auto; height: 120%; background: radial-gradient(600px 400px at 70% 40%, rgba(255, 122, 61, .18), transparent 70%), radial-gradient(500px 360px at 15% 70%, rgba(255, 94, 122, .10), transparent 70%); pointer-events: none; }
 .hero::after { content: ""; position: absolute; inset: 0; background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px); background-size: 64px 64px; opacity: .25; mask-image: radial-gradient(ellipse at 50% 40%, #000 20%, transparent 70%); -webkit-mask-image: radial-gradient(ellipse at 50% 40%, #000 20%, transparent 70%); pointer-events: none; }
-.embers { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
-.hero > *:not(.embers) { position: relative; z-index: 1; }
+.molten { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+.hero > *:not(.molten) { position: relative; z-index: 1; }
 .hero h1 { font-size: clamp(2.6rem, 6.4vw, 5rem); font-weight: 800; }
 .lede { font-size: clamp(1.05rem, 1.6vw, 1.25rem); color: var(--muted); max-width: 36rem; margin: 24px 0 0; }
 .pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border: 1px solid var(--line); border-radius: 999px; font-size: .85rem; color: var(--muted); margin: 0 0 24px; background: rgba(255, 255, 255, .02); }
@@ -239,7 +239,6 @@ section { padding: clamp(80px, 12vw, 160px) max(16px, calc((100vw - 1160px) / 2)
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   .reveal { opacity: 1; transform: none; }
-  .embers { display: none; }
 }
 
 /* Try it */
@@ -268,3 +267,65 @@ section { padding: clamp(80px, 12vw, 160px) max(16px, calc((100vw - 1160px) / 2)
 
 /* Without JavaScript the stage shows its first scene; the steps carry the story. */
 :root:not(.js) .scene:not([data-scene="0"]) { display: none; }
+
+/* Film grain over everything, for texture. */
+body::after { content: ""; position: fixed; inset: 0; z-index: 90; pointer-events: none; opacity: .07; mix-blend-mode: overlay; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+
+/* Hot metal cooling: the hero headline on load, section headings as they scroll in. */
+@keyframes cool {
+  0% { color: #fff3d1; text-shadow: 0 0 .2em rgba(255, 190, 110, .95), 0 0 .7em rgba(255, 110, 40, .8), 0 0 1.6em rgba(255, 60, 20, .5); }
+  40% { color: #ffab5e; text-shadow: 0 0 .15em rgba(255, 120, 50, .6), 0 0 .6em rgba(255, 70, 20, .35), 0 0 1.2em rgba(255, 40, 10, .15); }
+  100% { color: var(--fg); text-shadow: 0 0 0 rgba(255, 120, 50, 0), 0 0 0 rgba(255, 70, 20, 0), 0 0 0 rgba(255, 40, 10, 0); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .js .hero h1 { animation: cool 2.6s var(--ease) .15s both; }
+  @supports (animation-timeline: view()) {
+    h2 { animation: cool linear both; animation-timeline: view(); animation-range: entry 20% cover 45%; }
+  }
+}
+
+/* The forge: claims go in hot, get struck into a signed token, then sealed.
+   Only with JavaScript and motion (site.js adds .forging); otherwise the
+   three steps show as cards. --p is the scroll progress through .forge. */
+.anvil { display: none; }
+.forging { --p: 0; height: 300vh; margin-top: 24px; }
+.forging .forge-pin { position: sticky; top: 0; height: 100vh; display: grid; grid-template-columns: 1.15fr .85fr; align-items: center; gap: 56px; }
+.forging .flow { grid-template-columns: 1fr; gap: 14px; margin: 0; }
+.forging .flow-step { padding: 22px 24px; opacity: .3; transition: opacity .5s var(--ease), border-color .5s, transform .5s var(--ease); }
+.forging .flow-step.on { opacity: 1; border-color: rgba(255, 122, 61, .55); transform: translateX(-6px); }
+.forging .flow-step .num { margin-bottom: 10px; }
+.forging .anvil { display: grid; place-items: center; position: relative; height: min(70vh, 520px); border: 1px solid var(--line); border-radius: 24px; background: radial-gradient(circle at 50% 55%, rgba(255, 106, 31, calc(var(--heat) * .22)), transparent 65%), var(--bg-2); --heat: clamp(0, calc(1 - (var(--p) - .22) * 2.4), 1); }
+.ingot { grid-area: 1 / 1; display: grid; width: min(86%, 440px); padding: 26px 24px; border-radius: 14px; border: 1px solid color-mix(in oklab, #ffd08a calc(var(--heat) * 100%), var(--line));
+  background: radial-gradient(120% 90% at 30% 20%, rgba(255, 240, 200, calc(var(--heat) * .9)), transparent 60%), color-mix(in oklab, #ff6a1f calc(var(--heat) * 100%), #1b1714);
+  color: color-mix(in oklab, #4a1606 calc(var(--heat) * 100%), #e3d9d0);
+  box-shadow: 0 0 calc(var(--heat) * 90px) calc(var(--heat) * 6px) rgba(255, 100, 30, .55), 0 30px 60px -30px rgba(0, 0, 0, .9);
+  --c: calc(clamp(0, (var(--p) - .3) * 6, 1) * (1 - clamp(0, (var(--p) - .55) * 6, 1)));
+  transform: scale(calc(1 + var(--c) * .07), calc(1 - var(--c) * .14)); }
+.ingot pre { grid-area: 1 / 1; margin: 0; font-size: .82rem; line-height: 1.6; white-space: pre-wrap; word-break: break-all; }
+.ingot .raw { opacity: clamp(0, calc((.46 - var(--p)) * 9), 1); font-weight: 600; }
+.ingot .signed { opacity: clamp(0, calc((var(--p) - .42) * 9), 1); align-self: center; }
+.ingot .signed .k { color: var(--amber); } .ingot .signed .kid { color: var(--cool); }
+.spark { position: absolute; left: 50%; top: 50%; width: 3px; height: 14px; margin: -7px -1.5px; border-radius: 2px; background: linear-gradient(#fff6d6, #ff7a3d); opacity: 0; transform: rotate(calc(var(--i) * 30deg + 8deg)); }
+.struck .spark { animation: spark .75s cubic-bezier(.1, .7, .3, 1) both; animation-delay: calc(var(--i) * 12ms); }
+@keyframes spark { 0% { opacity: 1; transform: rotate(calc(var(--i) * 30deg + 8deg)) translateY(0) scaleY(1.6); } 100% { opacity: 0; transform: rotate(calc(var(--i) * 30deg + 8deg)) translateY(calc(-150px - var(--i) * 9px)) scaleY(.4); } }
+.struck .ingot { animation: strike .3s ease-out; }
+@keyframes strike { 30% { filter: brightness(1.8); translate: 0 4px; } }
+.ring { position: absolute; right: 12%; bottom: 14%; width: 120px; height: 120px; border-radius: 50%; border: 2px solid var(--ember); opacity: 0; }
+.stamp { position: absolute; right: 12%; bottom: 14%; width: 120px; height: 120px; border-radius: 50%; display: grid; place-content: center; text-align: center; gap: 2px; color: #fff4ea; font: 700 .7rem/1 var(--mono); letter-spacing: .12em; text-transform: uppercase;
+  background: radial-gradient(circle at 35% 30%, #ff9a5a, #d2401c 55%, #8e2410); box-shadow: inset 0 0 0 6px rgba(0, 0, 0, .12), inset 0 0 0 8px rgba(255, 220, 190, .35), 0 12px 30px -8px rgba(210, 64, 28, .7); opacity: 0; transform: scale(2.4) rotate(-40deg); }
+.stamp b { font-size: 1.9rem; line-height: 1.1; }
+.sealed .stamp { animation: slam .5s cubic-bezier(.5, 0, .75, 0) forwards; }
+@keyframes slam { 80% { opacity: 1; transform: scale(.92) rotate(-12deg); } 100% { opacity: 1; transform: scale(1) rotate(-12deg); } }
+.sealed .ring { animation: shock .8s .4s ease-out both; }
+@keyframes shock { from { opacity: .9; transform: scale(.9); } to { opacity: 0; transform: scale(2.4); } }
+.sealed .anvil { animation: thud .35s .4s ease-out; }
+@keyframes thud { 30% { translate: 0 5px; } 60% { translate: 0 -2px; } }
+@media (max-width: 900px) {
+  .forging .forge-pin { grid-template-columns: 1fr; grid-template-rows: auto auto; align-content: center; gap: 20px; }
+  .forging .anvil { height: 46vh; }
+  .forging .flow { display: grid; }
+  .forging .flow-step, .forging .flow-step.on { grid-area: 1 / 1; transform: none; }
+  .forging .flow-step:not(.on) { opacity: 0; }
+  .stamp, .ring { width: 92px; height: 92px; right: 6%; bottom: 8%; }
+  .ingot pre { font-size: .72rem; }
+}

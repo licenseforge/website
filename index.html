@@ -38,7 +38,7 @@
   <main id="main">
     <!-- Hero -->
     <section class="hero" id="top">
-      <canvas class="embers" aria-hidden="true"></canvas>
+      <canvas class="molten" aria-hidden="true"></canvas>
       <div class="hero-copy">
         <p class="pill reveal"><span class="dot"></span> Alpha · Apache-2.0 · self-hosted</p>
         <h1 class="reveal">Licensing that ships<br><span class="grad">wherever your software goes.</span></h1>
@@ -153,6 +153,22 @@
     <section class="how" id="how" aria-labelledby="how-title">
       <p class="eyebrow reveal">How it works</p>
       <h2 id="how-title" class="reveal">Three steps from catalog to a checked feature.</h2>
+      <div class="forge">
+        <div class="forge-pin">
+          <div class="anvil" aria-hidden="true">
+            <div class="ingot">
+              <pre class="raw mono">{
+  "product":  "acme-db",
+  "plan":     "enterprise",
+  "features": ["sso", "audit_export"],
+  "expires":  "2027-11-12"
+}</pre>
+              <pre class="signed mono"><span class="k">lf1</span>.<span class="kid">sk_zsnmkgs5cso3ipye6vuupterhq</span>.eyJsaWQiOiJsaWNfYjJhdHR4MnRwdmM0a3diYSIsInByb2R1Y3QiOiJhY21lLWRiIiwicGxhbiI6ImVudGVycHJpc2UifQ.3q7ZbWl0vV7cS9Y2nE1kq8Hk4tLd0Rk5o1X2pYJmQvA8fZ6c</pre>
+            </div>
+            <i class="spark"></i><i class="spark"></i><i class="spark"></i><i class="spark"></i><i class="spark"></i><i class="spark"></i><i class="spark"></i><i class="spark"></i><i class="spark"></i><i class="spark"></i><i class="spark"></i><i class="spark"></i>
+            <i class="ring"></i>
+            <div class="stamp"><span>Ed25519</span><b>✓</b><span>valid</span></div>
+          </div>
       <div class="flow">
         <article class="flow-step reveal">
           <span class="num">1</span>
@@ -169,6 +185,8 @@
           <h3>Verify</h3>
           <p>Your app embeds your public keys and checks the signed file itself: product, machine, expiry, features. No network call on the hot path.</p>
         </article>
+      </div>
+        </div>
       </div>
 
       <div class="code reveal">
