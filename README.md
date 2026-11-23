@@ -13,7 +13,7 @@ python3 scripts/check.py      # go-import tags, CSP hashes, local links
 
 ## Hosting
 
-Cloudflare Workers serves the site as static assets, from its Git integration (Workers Builds): every push to `main` deploys, and every branch or pull request from this repository gets a preview build (pull requests from forks don't). Nothing deploys from GitHub Actions, and no Cloudflare token is stored in GitHub. `.github/workflows/pages.yml` only checks the site.
+Cloudflare Workers serves the site as static assets, from its Git integration (Workers Builds): every push to `main` deploys, and with builds for non-production branches enabled, every branch from this repository gets a preview version (pull requests from forks don't). The site is also reachable at `website.<account>.workers.dev`, which previews need. Nothing deploys from GitHub Actions, and no Cloudflare token is stored in GitHub. `.github/workflows/pages.yml` only checks the site.
 - `wrangler.jsonc` configures it: the build runs `scripts/stage.sh`, and `_site/` is served, with `404.html` for unknown paths. There is no Worker script.
 - `scripts/stage.sh` copies what is served into `_site/`, so the README, scripts and workflows stay unpublished.
 - `_headers` sets the CSP and security headers.
@@ -28,7 +28,7 @@ Preview locally: `npx -y wrangler@4 dev` (it runs the build first).
 4. Worker → Settings → Domains & Routes → add the custom domain `licenseforge.io`, and `www.licenseforge.io` if wanted. Cloudflare creates the DNS records and the certificate.
 5. Zone → SSL/TLS → Edge Certificates: turn on **Always Use HTTPS** and HSTS.
 
-If the Worker or one of its custom domains is ever removed, check the zone's DNS records and delete any that are left.
+If the Worker or one of its custom domains is ever removed, check the zone's DNS records and delete any that are left, especially a `www` CNAME added by hand: another account could claim the name it points at.
 
 ## Go vanity import
 

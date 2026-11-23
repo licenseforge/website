@@ -1,5 +1,5 @@
 #!/bin/sh
-# Copies what the site serves into _site/ (Cloudflare Pages build command;
+# Copies what the site serves into _site/ (the build command in wrangler.jsonc;
 # README → Hosting). Everything else in the repository stays unpublished.
 set -eu
 cd "$(dirname "$0")/.."

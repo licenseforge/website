@@ -1,5 +1,5 @@
 name: Site
-# Cloudflare Pages builds and deploys the site from its Git integration
+# Cloudflare Workers Builds deploys the site from its Git integration
 # (README → Hosting); this workflow only checks it.
 on:
   pull_request:
@@ -21,6 +21,6 @@ jobs:
       # go-import tags, CSP hashes and local links.
       - name: Check the site
         run: python3 scripts/check.py
-      # The Cloudflare Pages build command; fails if a served file is missing.
+      # The Cloudflare build command; fails if a served file is missing.
       - name: Stage the site
         run: scripts/stage.sh
