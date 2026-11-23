@@ -10,7 +10,7 @@ import base64, hashlib, pathlib, re, sys
 
 root = pathlib.Path(__file__).resolve().parent.parent
 fail = []
-pages = sorted(p for p in root.rglob("*.html") if ".git" not in p.parts)
+pages = sorted(p for p in root.rglob("*.html") if not {".git", "_site"} & set(p.parts))
 
 def head(text):
     return text.split("<body", 1)[0]

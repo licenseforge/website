@@ -2,7 +2,7 @@
 
 Source of the [licenseforge.io](https://licenseforge.io) landing page and of the Go vanity import path `licenseforge.io/licenseforge`.
 
-Plain static files, no build step: `index.html`, `assets/` (CSS, JS, images, the dashboard recording), `404.html`, `licenseforge/index.html`.
+Plain static files; the only build step copies the served ones (`scripts/stage.sh`): `index.html`, `assets/` (CSS, JS, images, the dashboard recording), `404.html`, `licenseforge/index.html`.
 
 ## Preview
 
@@ -13,21 +13,27 @@ python3 scripts/check.py      # go-import tags, CSP hashes, local links
 
 ## Hosting
 
-Any static host works. Point `licenseforge.io` at it and serve this directory as is:
-- **Cloudflare Pages or Netlify:** `_headers` sets the CSP and security headers; `_redirects` answers every `/licenseforge/...` path with the go-import page (status 200).
-- **GitHub Pages:** `.github/workflows/pages.yml` deploys `main`. Its deploy job fails until a maintainer sets up Pages (below). `_headers` and `_redirects` are ignored there. The go import still works through `404.html` (below). Set the security headers at a CDN in front if you need them.
+Cloudflare Pages serves the site from its Git integration: every push to `main` deploys, and every branch or pull request from this repository gets a preview URL (pull requests from forks don't). Nothing deploys from GitHub Actions, and no Cloudflare token is stored in GitHub. `.github/workflows/pages.yml` only checks the site.
+- `scripts/stage.sh` copies what is served into `_site/`, so the README, scripts and workflows stay unpublished.
+- `_headers` sets the CSP and security headers.
+- `_redirects` answers every `/licenseforge/...` path with the go-import page (status 200).
 
-### Setting up GitHub Pages (once)
-1. **Verify the domain first:** organization Settings → Pages → Verified domains → add `licenseforge.io` and its TXT record. Otherwise, if the site is ever unpublished while DNS still points at GitHub, another account could claim the domain and serve its own `go-import` tag, so that `go get licenseforge.io/...` fetches its code.
-2. Repository Settings → Pages → Source: **GitHub Actions**.
-3. Custom domain `licenseforge.io`: the apex A/AAAA records from GitHub's docs, and `www` as a CNAME to `licenseforge.github.io` if wanted.
-4. **Enforce HTTPS** once the certificate is issued, which can take up to a day.
+Preview the Pages behaviour locally: `scripts/stage.sh && npx -y wrangler@4 pages dev _site`.
+
+### Setting up Cloudflare Pages (once)
+1. Add `licenseforge.io` to Cloudflare as a zone, and switch the domain's nameservers at the registrar to the two Cloudflare gives you. An apex custom domain on Pages needs the zone on Cloudflare.
+2. Workers & Pages → Create → Pages → **Connect to Git** → install the Cloudflare GitHub app on the `licenseforge` organisation, for this repository only → pick `licenseforge/website`.
+3. Build settings: framework preset **None**, build command `sh scripts/stage.sh`, build output directory `_site`, production branch `main`.
+4. Project → Custom domains → add `licenseforge.io`, and `www.licenseforge.io` if wanted. Cloudflare creates the DNS records and the certificate.
+5. Zone → SSL/TLS → Edge Certificates: turn on **Always Use HTTPS** and HSTS.
+
+Whenever the Pages project or one of its custom domains is removed, delete the matching DNS records too, especially a subdomain CNAME such as `www`: Cloudflare leaves them in place. An apex custom domain can only be attached from the account that owns the zone, but a leftover subdomain CNAME pointing at a freed `*.pages.dev` name could be claimed by another account.
 
 ## Go vanity import
 
 `go get licenseforge.io/licenseforge/sdk/go` requests `https://licenseforge.io/licenseforge/sdk/go?go-get=1` (and the same for any package path) and reads the `go-import` meta tag, which maps the path to the GitHub repository; nested modules such as `sdk/go` are found by directory, with tags `sdk/go/vX.Y.Z`.
 - `licenseforge/index.html` and `404.html` carry the same tags in `<head>` (`scripts/check.py` keeps them in step).
-- `cmd/go` reads the tag whatever the HTTP status: it reports the status only when no tag is found. So a host's 404 page covers every package path without rewrite rules.
+- `cmd/go` reads the tag whatever the HTTP status: it reports the status only when no tag is found. So the 404 page still covers every package path if the rewrite in `_redirects` ever stops applying.
 
 Verify after deploying:
 ```
